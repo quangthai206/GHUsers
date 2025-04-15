@@ -6,17 +6,54 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		27AD4A7A2DAEA00200EBFCC8 /* GHUsersCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD4A742DAEA00200EBFCC8 /* GHUsersCore.framework */; };
+		27AD4A7B2DAEA00200EBFCC8 /* GHUsersCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD4A742DAEA00200EBFCC8 /* GHUsersCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		27AD4A782DAEA00200EBFCC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 27AD49F82DAE07AC00EBFCC8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 27AD4A732DAEA00200EBFCC8;
+			remoteInfo = GHUsersCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		27AD4A802DAEA00200EBFCC8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				27AD4A7B2DAEA00200EBFCC8 /* GHUsersCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		27AD4A002DAE07AC00EBFCC8 /* GHUsers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GHUsers.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		27AD4A742DAEA00200EBFCC8 /* GHUsersCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GHUsersCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		27AD4A122DAE07AE00EBFCC8 /* Exceptions for "GHUsers" folder in "GHUsers" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Config/Info.plist,
 			);
 			target = 27AD49FF2DAE07AC00EBFCC8 /* GHUsers */;
+		};
+		27AD4A7F2DAEA00200EBFCC8 /* Exceptions for "GHUsersCore" folder in "GHUsersCore" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				GHUsersCore.h,
+			);
+			target = 27AD4A732DAEA00200EBFCC8 /* GHUsersCore */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,10 +66,26 @@
 			path = GHUsers;
 			sourceTree = "<group>";
 		};
+		27AD4A752DAEA00200EBFCC8 /* GHUsersCore */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				27AD4A7F2DAEA00200EBFCC8 /* Exceptions for "GHUsersCore" folder in "GHUsersCore" target */,
+			);
+			path = GHUsersCore;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		27AD49FD2DAE07AC00EBFCC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27AD4A7A2DAEA00200EBFCC8 /* GHUsersCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27AD4A712DAEA00200EBFCC8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				27AD4A022DAE07AC00EBFCC8 /* GHUsers */,
+				27AD4A752DAEA00200EBFCC8 /* GHUsersCore */,
 				27AD4A012DAE07AC00EBFCC8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,11 +108,22 @@
 			isa = PBXGroup;
 			children = (
 				27AD4A002DAE07AC00EBFCC8 /* GHUsers.app */,
+				27AD4A742DAEA00200EBFCC8 /* GHUsersCore.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		27AD4A6F2DAEA00200EBFCC8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		27AD49FF2DAE07AC00EBFCC8 /* GHUsers */ = {
@@ -68,10 +133,12 @@
 				27AD49FC2DAE07AC00EBFCC8 /* Sources */,
 				27AD49FD2DAE07AC00EBFCC8 /* Frameworks */,
 				27AD49FE2DAE07AC00EBFCC8 /* Resources */,
+				27AD4A802DAEA00200EBFCC8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				27AD4A792DAEA00200EBFCC8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				27AD4A022DAE07AC00EBFCC8 /* GHUsers */,
@@ -82,6 +149,29 @@
 			productName = GHUsers;
 			productReference = 27AD4A002DAE07AC00EBFCC8 /* GHUsers.app */;
 			productType = "com.apple.product-type.application";
+		};
+		27AD4A732DAEA00200EBFCC8 /* GHUsersCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27AD4A7C2DAEA00200EBFCC8 /* Build configuration list for PBXNativeTarget "GHUsersCore" */;
+			buildPhases = (
+				27AD4A6F2DAEA00200EBFCC8 /* Headers */,
+				27AD4A702DAEA00200EBFCC8 /* Sources */,
+				27AD4A712DAEA00200EBFCC8 /* Frameworks */,
+				27AD4A722DAEA00200EBFCC8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				27AD4A752DAEA00200EBFCC8 /* GHUsersCore */,
+			);
+			name = GHUsersCore;
+			packageProductDependencies = (
+			);
+			productName = GHUsersCore;
+			productReference = 27AD4A742DAEA00200EBFCC8 /* GHUsersCore.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -95,6 +185,10 @@
 				TargetAttributes = {
 					27AD49FF2DAE07AC00EBFCC8 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					27AD4A732DAEA00200EBFCC8 = {
+						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
@@ -113,12 +207,20 @@
 			projectRoot = "";
 			targets = (
 				27AD49FF2DAE07AC00EBFCC8 /* GHUsers */,
+				27AD4A732DAEA00200EBFCC8 /* GHUsersCore */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		27AD49FE2DAE07AC00EBFCC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27AD4A722DAEA00200EBFCC8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +237,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27AD4A702DAEA00200EBFCC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		27AD4A792DAEA00200EBFCC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 27AD4A732DAEA00200EBFCC8 /* GHUsersCore */;
+			targetProxy = 27AD4A782DAEA00200EBFCC8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		27AD4A142DAE07AE00EBFCC8 /* Debug */ = {
@@ -146,12 +263,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GHUsers/Info.plist;
+				INFOPLIST_FILE = GHUsers/Config/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -173,12 +290,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GHUsers/Info.plist;
+				INFOPLIST_FILE = GHUsers/Config/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -311,6 +428,79 @@
 			};
 			name = Release;
 		};
+		27AD4A7D2DAEA00200EBFCC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.poc.GHUsersCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		27AD4A7E2DAEA00200EBFCC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.poc.GHUsersCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,6 +518,15 @@
 			buildConfigurations = (
 				27AD4A142DAE07AE00EBFCC8 /* Debug */,
 				27AD4A152DAE07AE00EBFCC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		27AD4A7C2DAEA00200EBFCC8 /* Build configuration list for PBXNativeTarget "GHUsersCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27AD4A7D2DAEA00200EBFCC8 /* Debug */,
+				27AD4A7E2DAEA00200EBFCC8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
