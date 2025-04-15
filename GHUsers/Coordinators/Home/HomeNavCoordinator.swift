@@ -24,6 +24,22 @@ extension HomeNavCoordinator {
     let vc = storyboard.instantiateViewController(withIdentifier: UserListController.storyboardID) as! UserListController
     vc.viewModel = vm
     
+    vc.onUserItemTap = trigger(type(of: self).pushUserDetailsScene)
+    
     navRouter.setRoot(vc, animated: true)
+  }
+}
+
+// MARK: - UserDetails Scene
+
+extension HomeNavCoordinator {
+  func pushUserDetailsScene(user: GitHubUser) {
+    let vm = UserDetailsViewModel(user: user)
+    
+    let storyboard = UIStoryboard(name: "UserDetails", bundle: nil)
+    let vc = storyboard.instantiateViewController(withIdentifier: UserDetailsController.storyboardID) as! UserDetailsController
+    vc.viewModel = vm
+    
+    navRouter.push(vc, animated: true)
   }
 }

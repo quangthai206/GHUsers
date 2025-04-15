@@ -13,6 +13,9 @@ public struct GitHubUser: Decodable {
   public let location: String?
   public let avatarURL: URL
   public let htmlURL: URL
+  public let blogURL: URL?
+  public let followers: Int?
+  public let following: Int?
   
   enum CodingKeys: String, CodingKey {
     case login
@@ -20,5 +23,8 @@ public struct GitHubUser: Decodable {
     case location
     case avatarURL = "avatar_url"
     case htmlURL = "html_url"
+    case blogURL = "blog"
+    case followers
+    case following
   }
 }

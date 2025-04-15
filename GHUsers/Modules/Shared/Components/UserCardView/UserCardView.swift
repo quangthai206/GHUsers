@@ -77,26 +77,6 @@ private extension UserCardView {
   
   func refreshTextView() {
     linkTextView.isHidden = viewModel.isLinkURLHidden
-    
-    guard let linkText = viewModel.linkURL?.absoluteString else {
-      return
-    }
-    
-    let attributedString = NSMutableAttributedString(string: linkText)
-    attributedString.addAttribute(
-      .link,
-      value: linkText, range: NSRange(location: 0, length: linkText.count)
-    )
-    
-    linkTextView.attributedText = attributedString
-    linkTextView.isEditable = false
-    linkTextView.isSelectable = true
-    linkTextView.isScrollEnabled = false
-    linkTextView.dataDetectorTypes = [.link]
-    linkTextView.textAlignment = .left
-    linkTextView.textColor = .systemBlue
-    linkTextView.backgroundColor = .clear
-    linkTextView.textContainerInset = .zero
-    linkTextView.textContainer.lineFragmentPadding = 0
+    linkTextView.configureAsLink(viewModel.linkURL)
   }
 }

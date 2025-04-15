@@ -13,5 +13,6 @@ public protocol UserListViewModelProtocol {
   var numberOfUsers: Int { get }
   
   func itemCellVM(at index: Int) -> UserCardViewModelProtocol
+  func user(at index: Int) -> GitHubUser
   func fetchUsers()
 }

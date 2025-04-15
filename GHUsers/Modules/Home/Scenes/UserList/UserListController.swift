@@ -12,6 +12,8 @@ import GHUsersCore
 final class UserListController: UIViewController {
   var viewModel: UserListViewModelProtocol!
   
+  var onUserItemTap: SingleResult<GitHubUser>?
+  
   @IBOutlet private(set) var tableView: UITableView!
   
   private var cancellables = Set<AnyCancellable>()
@@ -26,6 +28,12 @@ extension UserListController {
     setup()
     bind()
     viewModel.fetchUsers()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    navigationItem.largeTitleDisplayMode = .always
   }
 }
 
@@ -96,6 +104,6 @@ extension UserListController: UITableViewDataSource, UITableViewDelegate {
     _ tableView: UITableView,
     didSelectRowAt indexPath: IndexPath
   ) {
-    // TODO: Implement later
+    onUserItemTap?(viewModel.user(at: indexPath.row))
   }
 }
