@@ -9,14 +9,21 @@ import Foundation
 import Combine
 
 public final class UserListViewModel: UserListViewModelProtocol {
+  private let userService: UserServiceProtocol
+  private let config: AppConfigProtocol
+  
   private let reloadSubject = PassthroughSubject<Void, Never>()
+  private let errorSubject = CurrentValueSubject<String?, Never>(nil)
   
   private var users: [GitHubUser] = []
+  private var isFetching = false
   
-  private var cancellables = Set<AnyCancellable>()
-  
-  public init() {
-    
+  public init(
+    userService: UserServiceProtocol,
+    config: AppConfigProtocol
+  ) {
+    self.userService = userService
+    self.config = config
   }
 }
 
@@ -24,39 +31,31 @@ public final class UserListViewModel: UserListViewModelProtocol {
 
 extension UserListViewModel {
   public func fetchUsers() {
-    // TODO: Dummy data
-    users = [
-      GitHubUser(
-        login: "jvantuyl",
-        name: nil,
-        location: nil,
-        avatarURL: URL(string: "https://avatars.githubusercontent.com/u/101?v=4")!,
-        htmlURL: URL(string: "https://github.com/jvantuyl")!,
-        blogURL: nil,
-        followers: 100,
-        following: 5
-      ),
-      GitHubUser(
-        login: "BrianTheCoder",
-        name: nil,
-        location: nil,
-        avatarURL: URL(string: "https://avatars.githubusercontent.com/u/102?v=4")!,
-        htmlURL: URL(string: "https://github.com/BrianTheCoder")!,
-        blogURL: URL(string: "http://joshowens.dev/")!,
-        followers: 1,
-        following: 12
-      ),
-      GitHubUser(
-        login: "freeformz",
-        name: "Edward Muller",
-        location: "PDX Area, OR",
-        avatarURL: URL(string: "https://avatars.githubusercontent.com/u/103?v=4")!,
-        htmlURL: URL(string: "https://github.com/freeformz")!,
-        blogURL: nil,
-        followers: 30,
-        following: 40
-      )
-    ]
+    Task {
+      if isFetching { return }
+      isFetching = true
+      
+      do {
+        let fetchedUsers = try await userService.fetchUsers(
+          since: users.last?.id,
+          perPage: config.defaultPageSize
+        )
+        
+        await MainActor.run {
+          if !fetchedUsers.isEmpty {
+            self.users.append(contentsOf: fetchedUsers)
+          }
+          self.isFetching = false
+          self.reloadSubject.send()
+        }
+        
+      } catch {
+        await MainActor.run {
+          self.isFetching = false
+          self.errorSubject.send("Failed to load users")
+        }
+      }
+    }
   }
   
   public func itemCellVM(at index: Int) -> UserCardViewModelProtocol {
@@ -74,5 +73,8 @@ extension UserListViewModel {
   public var numberOfUsers: Int { users.count }
   public var reloadPublisher: AnyPublisher<Void, Never> {
     reloadSubject.eraseToAnyPublisher()
+  }
+  public var errorPublisher: AnyPublisher<String?, Never> {
+    errorSubject.eraseToAnyPublisher()
   }
 }

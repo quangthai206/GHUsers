@@ -9,8 +9,9 @@ import Foundation
 import Combine
 
 public protocol UserListViewModelProtocol {
-  var reloadPublisher: AnyPublisher<Void, Never> { get }
   var numberOfUsers: Int { get }
+  var reloadPublisher: AnyPublisher<Void, Never> { get }
+  var errorPublisher: AnyPublisher<String?, Never> { get }
   
   func itemCellVM(at index: Int) -> UserCardViewModelProtocol
   func user(at index: Int) -> GitHubUser

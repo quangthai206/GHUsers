@@ -9,6 +9,20 @@ import UIKit
 import GHUsersCore
 
 final class HomeNavCoordinator: NavCoordinator {
+  private let config: AppConfigProtocol
+  private let userService: UserServiceProtocol
+  
+  init(
+    navRouter: NavRouterProtocol,
+    config: AppConfigProtocol = App.shared.config,
+    userService: UserServiceProtocol = App.shared.user
+  ) {
+    self.config = config
+    self.userService = userService
+    
+    super.init(navRouter: navRouter)
+  }
+  
   override func start() {
     setRootToUserListScene()
   }
@@ -18,7 +32,10 @@ final class HomeNavCoordinator: NavCoordinator {
 
 extension HomeNavCoordinator {
   func setRootToUserListScene() {
-    let vm = UserListViewModel()
+    let vm = UserListViewModel(
+      userService: userService,
+      config: config
+    )
     
     let storyboard = UIStoryboard(name: "UserList", bundle: nil)
     let vc = storyboard.instantiateViewController(withIdentifier: UserListController.storyboardID) as! UserListController
@@ -34,7 +51,10 @@ extension HomeNavCoordinator {
 
 extension HomeNavCoordinator {
   func pushUserDetailsScene(user: GitHubUser) {
-    let vm = UserDetailsViewModel(user: user)
+    let vm = UserDetailsViewModel(
+      user: user,
+      userService: userService
+    )
     
     let storyboard = UIStoryboard(name: "UserDetails", bundle: nil)
     let vc = storyboard.instantiateViewController(withIdentifier: UserDetailsController.storyboardID) as! UserDetailsController

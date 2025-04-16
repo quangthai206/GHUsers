@@ -196,6 +196,10 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="TQV-mD-P09"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Xwe-Sk-RJJ"/>
                             </scrollView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="3ib-y3-vKQ">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Rmj-9j-8nx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -207,6 +211,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="3ib-y3-vKQ" id="xPi-AA-Squ"/>
                         <outlet property="blogInfoView" destination="gpi-wd-Seq" id="0KR-lg-WxW"/>
                         <outlet property="blogLinkTextView" destination="sAx-0L-8fp" id="iUs-xi-4lW"/>
                         <outlet property="followInfoStackView" destination="jb5-re-EuT" id="Q0c-Y6-F6A"/>

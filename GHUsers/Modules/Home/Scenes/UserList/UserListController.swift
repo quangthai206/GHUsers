@@ -15,6 +15,7 @@ final class UserListController: UIViewController {
   var onUserItemTap: SingleResult<GitHubUser>?
   
   @IBOutlet private(set) var tableView: UITableView!
+  @IBOutlet private(set) var activityIndicator: UIActivityIndicatorView!
   
   private var cancellables = Set<AnyCancellable>()
 }
@@ -27,7 +28,7 @@ extension UserListController {
     
     setup()
     bind()
-    viewModel.fetchUsers()
+    fetchData()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -67,10 +68,28 @@ private extension UserListController {
     viewModel.reloadPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
-        guard let self else { return }
-        self.tableView.reloadData()
+        self?.activityIndicator.stopAnimating()
+        self?.tableView.reloadData()
       }
       .store(in: &cancellables)
+    
+    viewModel.errorPublisher
+      .dropFirst()
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] errorMessage in
+        self?.activityIndicator.stopAnimating()
+        self?.showErrorAlert(message: errorMessage)
+      }
+      .store(in: &cancellables)
+  }
+}
+
+// MARK: - Helpers
+
+private extension UserListController {
+  func fetchData() {
+    activityIndicator.startAnimating()
+    viewModel.fetchUsers()
   }
 }
 
@@ -105,5 +124,17 @@ extension UserListController: UITableViewDataSource, UITableViewDelegate {
     didSelectRowAt indexPath: IndexPath
   ) {
     onUserItemTap?(viewModel.user(at: indexPath.row))
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let offsetY = scrollView.contentOffset.y
+    let contentHeight = scrollView.contentSize.height
+    let frameHeight = scrollView.frame.size.height
+    
+    let isAtBottom = offsetY >= contentHeight - frameHeight
+    
+    if isAtBottom {
+      fetchData()
+    }
   }
 }

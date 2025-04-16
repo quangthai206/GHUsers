@@ -7,6 +7,7 @@
 
 import UIKit
 import GHUsersCore
+import Combine
 
 final class UserDetailsController: UIViewController {
   var viewModel: UserDetailsViewModelProtocol!
@@ -17,6 +18,9 @@ final class UserDetailsController: UIViewController {
   @IBOutlet private(set) var followingCountLabel: UILabel!
   @IBOutlet private(set) var blogInfoView: UIView!
   @IBOutlet private(set) var blogLinkTextView: UITextView!
+  @IBOutlet private(set) var activityIndicator: UIActivityIndicatorView!
+  
+  private var cancellables = Set<AnyCancellable>()
 }
 
 // MARK: - Lifecycle
@@ -27,7 +31,7 @@ extension UserDetailsController {
     
     setup()
     bind()
-    refresh()
+    fetchData()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +45,10 @@ extension UserDetailsController {
 
 private extension UserDetailsController {
   func setup() {
-    title = "User Details"
+    title = viewModel.userLogin
+    
+    // Display user card view
+    refresh()
   }
 }
 
@@ -49,7 +56,31 @@ private extension UserDetailsController {
 
 private extension UserDetailsController {
   func bind() {
+    viewModel.reloadPublisher
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        self?.activityIndicator.stopAnimating()
+        self?.refresh()
+      }
+      .store(in: &cancellables)
     
+    viewModel.errorPublisher
+      .dropFirst()
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] errorMessage in
+        self?.activityIndicator.stopAnimating()
+        self?.showErrorAlert(message: errorMessage)
+      }
+      .store(in: &cancellables)
+  }
+}
+
+// MARK: - Helpers
+
+private extension UserDetailsController {
+  func fetchData() {
+    activityIndicator.startAnimating()
+    viewModel.fetchUserDetails()
   }
 }
 
