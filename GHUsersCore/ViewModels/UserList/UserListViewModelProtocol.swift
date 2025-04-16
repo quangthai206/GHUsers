@@ -13,7 +13,7 @@ public protocol UserListViewModelProtocol {
   var reloadPublisher: AnyPublisher<Void, Never> { get }
   var errorPublisher: AnyPublisher<String?, Never> { get }
   
-  func itemCellVM(at index: Int) -> UserCardViewModelProtocol
-  func user(at index: Int) -> GitHubUser
-  func fetchUsers()
+  func itemCellVM(at index: Int) -> UserCardViewModelProtocol?
+  func user(at index: Int) -> CachedUser?
+  func fetchUsersIfNeeded()
 }

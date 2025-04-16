@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import CoreData
 
 public protocol UserServiceProtocol {
-  func fetchUsers(since userId: Int?, perPage: Int) async throws -> [GitHubUser]
+  func fetchRemoteUsers(since: Int?, perPage: Int) async throws -> [GitHubUser]
   func fetchUserDetails(with login: String) async throws -> GitHubUser
+  func makeFetchedResultsController() -> NSFetchedResultsController<CachedUser>
 }

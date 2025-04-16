@@ -7,15 +7,23 @@
 
 import Foundation
 import Combine
+import CoreData
 
-public final class UserListViewModel: UserListViewModelProtocol {
+public final class UserListViewModel: NSObject, UserListViewModelProtocol {
   private let userService: UserServiceProtocol
   private let config: AppConfigProtocol
   
-  private let reloadSubject = PassthroughSubject<Void, Never>()
-  private let errorSubject = CurrentValueSubject<String?, Never>(nil)
+  @Published private(set) var errorMessage: String?
   
-  private var users: [GitHubUser] = []
+  private let reloadSubject = PassthroughSubject<Void, Never>()
+  
+  private lazy var fetchedResultsController: NSFetchedResultsController<CachedUser> = {
+    let frc = userService.makeFetchedResultsController()
+    frc.delegate = self
+    try? frc.performFetch()
+    return frc
+  }()
+  
   private var isFetching = false
   
   public init(
@@ -30,51 +38,57 @@ public final class UserListViewModel: UserListViewModelProtocol {
 // MARK: - Methods
 
 extension UserListViewModel {
-  public func fetchUsers() {
+  public func fetchUsersIfNeeded() {
+    guard !isFetching else { return }
+    
+    isFetching = true
+    
     Task {
-      if isFetching { return }
-      isFetching = true
-      
+      let lastUserId = fetchedResultsController.fetchedObjects?.last?.id
       do {
-        let fetchedUsers = try await userService.fetchUsers(
-          since: users.last?.id,
+        try await userService.fetchRemoteUsers(
+          since: Int(lastUserId ?? 0),
           perPage: config.defaultPageSize
         )
-        
-        await MainActor.run {
-          if !fetchedUsers.isEmpty {
-            self.users.append(contentsOf: fetchedUsers)
-          }
-          self.isFetching = false
-          self.reloadSubject.send()
-        }
-        
       } catch {
-        await MainActor.run {
-          self.isFetching = false
-          self.errorSubject.send("Failed to load users")
-        }
+        errorMessage = "Failed to fetch users"
       }
+      
+      isFetching = false
     }
   }
   
-  public func itemCellVM(at index: Int) -> UserCardViewModelProtocol {
-    UserCardViewModel(user: users[index])
+  public func itemCellVM(at index: Int) -> UserCardViewModelProtocol? {
+    guard let user = user(at: index) else {
+      return nil
+    }
+    
+    return UserCardViewModel(user: user)
   }
   
-  public func user(at index: Int) -> GitHubUser {
-    users[index]
+  public func user(at index: Int) -> CachedUser? {
+    fetchedResultsController.fetchedObjects?[index]
+  }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension UserListViewModel: NSFetchedResultsControllerDelegate {
+  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    reloadSubject.send()
   }
 }
 
 // MARK: - Getters
 
 extension UserListViewModel {
-  public var numberOfUsers: Int { users.count }
+  public var numberOfUsers: Int {
+    fetchedResultsController.fetchedObjects?.count ?? 0
+  }
   public var reloadPublisher: AnyPublisher<Void, Never> {
     reloadSubject.eraseToAnyPublisher()
   }
   public var errorPublisher: AnyPublisher<String?, Never> {
-    errorSubject.eraseToAnyPublisher()
+    $errorMessage.eraseToAnyPublisher()
   }
 }

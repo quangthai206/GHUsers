@@ -14,10 +14,10 @@ public final class UserDetailsViewModel: UserDetailsViewModelProtocol {
   private let reloadSubject = PassthroughSubject<Void, Never>()
   private let errorSubject = CurrentValueSubject<String?, Never>(nil)
   
-  private var user: GitHubUser
+  private var user: CachedUser
   
   public init(
-    user: GitHubUser,
+    user: CachedUser,
     userService: UserServiceProtocol
   ) {
     self.user = user
@@ -31,7 +31,8 @@ extension UserDetailsViewModel {
   public func fetchUserDetails() {
     Task {
       do {
-        user = try await userService.fetchUserDetails(with: user.login)
+        let userDetails = try await userService.fetchUserDetails(with: user.login)
+        user.update(from: userDetails)
         await MainActor.run {
           self.reloadSubject.send()
         }
@@ -57,8 +58,8 @@ extension UserDetailsViewModel {
     return URL(string: blogLink)
   }
   
-  public var followersCountText: String { "\(user.followers ?? 0)" }
-  public var followingCountText: String { "\(user.following ?? 0)" }
+  public var followersCountText: String { "\(user.followers)" }
+  public var followingCountText: String { "\(user.following)" }
   
   public var isBlogInfoHidden: Bool { blogURL == nil }
   

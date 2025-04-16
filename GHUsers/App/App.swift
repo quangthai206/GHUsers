@@ -13,7 +13,9 @@ class App {
   
   private(set) var config: AppConfigProtocol!
   
-  private(set) var api: GitHubAPIClient!
+  private(set) var api: GitHubAPIClientProtocol!
+  
+  private(set) var coreData: CoreDataClientProtocol!
   
   // MARK: User
   
@@ -34,6 +36,11 @@ class App {
       baseURL: URL(string: config.baseUrl)!
     )
     
-    user = UserService(api: api)
+    coreData = CoreDataClient(coreDataStack: CoreDataStack.shared)
+    
+    user = UserService(
+      apiClient: api,
+      coreDataClient: coreData
+    )
   }
 }

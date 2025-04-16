@@ -12,7 +12,7 @@ import GHUsersCore
 final class UserListController: UIViewController {
   var viewModel: UserListViewModelProtocol!
   
-  var onUserItemTap: SingleResult<GitHubUser>?
+  var onUserItemTap: SingleResult<CachedUser>?
   
   @IBOutlet private(set) var tableView: UITableView!
   @IBOutlet private(set) var activityIndicator: UIActivityIndicatorView!
@@ -28,7 +28,6 @@ extension UserListController {
     
     setup()
     bind()
-    fetchData()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -84,15 +83,6 @@ private extension UserListController {
   }
 }
 
-// MARK: - Helpers
-
-private extension UserListController {
-  func fetchData() {
-    activityIndicator.startAnimating()
-    viewModel.fetchUsers()
-  }
-}
-
 // MARK: - UITableViewDataSource & Delegate
 
 extension UserListController: UITableViewDataSource, UITableViewDelegate {
@@ -123,7 +113,9 @@ extension UserListController: UITableViewDataSource, UITableViewDelegate {
     _ tableView: UITableView,
     didSelectRowAt indexPath: IndexPath
   ) {
-    onUserItemTap?(viewModel.user(at: indexPath.row))
+    if let user = viewModel.user(at: indexPath.row) {
+      onUserItemTap?(user)
+    }
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -131,10 +123,10 @@ extension UserListController: UITableViewDataSource, UITableViewDelegate {
     let contentHeight = scrollView.contentSize.height
     let frameHeight = scrollView.frame.size.height
     
-    let isAtBottom = offsetY >= contentHeight - frameHeight
-    
-    if isAtBottom {
-      fetchData()
+    let isAtBottom = offsetY > contentHeight - frameHeight
+    if isAtBottom && !activityIndicator.isAnimating {
+      activityIndicator.startAnimating()
+      viewModel.fetchUsersIfNeeded()
     }
   }
 }

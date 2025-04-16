@@ -50,7 +50,7 @@ extension HomeNavCoordinator {
 // MARK: - UserDetails Scene
 
 extension HomeNavCoordinator {
-  func pushUserDetailsScene(user: GitHubUser) {
+  func pushUserDetailsScene(user: CachedUser) {
     let vm = UserDetailsViewModel(
       user: user,
       userService: userService
