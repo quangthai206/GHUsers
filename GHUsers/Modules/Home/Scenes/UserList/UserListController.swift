@@ -43,6 +43,7 @@ private extension UserListController {
   func setup() {
     setupNavigation()
     setupTableView()
+    configureAccessibilityIdentifiers()
   }
   
   func setupNavigation() {
@@ -57,6 +58,10 @@ private extension UserListController {
       UserTableViewCell.self,
       forCellReuseIdentifier: UserTableViewCell.reuseIdentifier
     )
+  }
+  
+  func configureAccessibilityIdentifiers() {
+    tableView.accessibilityIdentifier = "usersTableView"
   }
 }
 

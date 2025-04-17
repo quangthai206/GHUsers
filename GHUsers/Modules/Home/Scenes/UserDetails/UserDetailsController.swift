@@ -46,9 +46,16 @@ extension UserDetailsController {
 private extension UserDetailsController {
   func setup() {
     title = viewModel.userLogin
+    configureAccessibilityIdentifiers()
     
     // Display user card view
     refresh()
+  }
+  
+  func configureAccessibilityIdentifiers() {
+    userCardView.accessibilityIdentifier = "userDetailsCardView"
+    followersCountLabel.accessibilityIdentifier = "followersCountLabel"
+    followingCountLabel.accessibilityIdentifier = "followingCountLabel"
   }
 }
 

@@ -33,6 +33,7 @@ private extension UserCardView {
   func setup() {
     setupImageView()
     setupShadow()
+    configureAccessibilityIdentifiers()
   }
   
   func setupImageView() {
@@ -50,6 +51,10 @@ private extension UserCardView {
       offSet: CGSize(width: 0, height: 2),
       radius: 2
     )
+  }
+  
+  func configureAccessibilityIdentifiers() {
+    nameLabel.accessibilityIdentifier = "userCardNameLabel"
   }
 }
 
