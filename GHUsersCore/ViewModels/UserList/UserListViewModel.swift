@@ -67,7 +67,13 @@ extension UserListViewModel {
   }
   
   public func user(at index: Int) -> CachedUser? {
-    fetchedResultsController.fetchedObjects?[index]
+    guard
+      let fetchedObjects = fetchedResultsController.fetchedObjects,
+      fetchedObjects.indices.contains(index)
+    else {
+      return nil
+    }
+    return fetchedObjects[index]
   }
 }
 
